@@ -38,5 +38,5 @@ O **AnalyzeWhats** é um **aplicativo de análise de mensagens do WhatsApp** des
 
 ### **1️⃣ Clone o Repositório**  
 ```bash
-git clone https://github.com/seu-usuario/AnalyzeWhats.git
+[git clone https://github.com/seu-usuario/AnalyzeWhats.git](https://github.com/beatrizcardc/Analise_WhatsApp.git)
 
