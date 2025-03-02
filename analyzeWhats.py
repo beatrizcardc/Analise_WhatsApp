@@ -37,7 +37,7 @@ if not check_password():
 # 📌 Carregar os dados processados
 @st.cache_data
 def carregar_dados():
-    return pd.read_csv("https://github.com/beatrizcardc/Analise_WhatsApp/blob/main/whatsapp_processado.csv")
+    return pd.read_csv("whatsapp_processado.csv")
 
 df = carregar_dados()
 
