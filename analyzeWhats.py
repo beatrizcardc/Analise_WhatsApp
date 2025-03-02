@@ -58,12 +58,25 @@ df_filtrado = df[
     (df["Categoria"].isin(categoria_selecionada))
 ]
 
-# 📌 Exibir Mensagens Filtradas
-st.header("📅 Mensagens Filtradas")
-if not df_filtrado.empty:
-    st.dataframe(df_filtrado[["Data", "Hora", "Remetente", "Mensagem", "Categoria"]])
-else:
-    st.warning("⚠ Nenhuma mensagem encontrada para o período e categoria selecionados.")
+# 📌 Nome e Introdução do Aplicativo
+st.title("📊 AnalyzeWhats - Análise de Mensagens do WhatsApp")
+
+st.markdown("""
+### 📌 Sobre o AnalyzeWhats
+O **AnalyzeWhats** é um aplicativo desenvolvido para **analisar interações em grupos do WhatsApp**.  
+Com ele, você pode visualizar estatísticas sobre participação dos usuários, tipos de mensagens mais frequentes e gerar **insights** para engajar mais seu grupo.
+
+### 🔎 O que você pode fazer aqui?
+✅ **Filtrar mensagens** por período e categorias específicas  
+✅ **Descobrir quem são os usuários mais ativos** no grupo  
+✅ **Analisar os dias mais movimentados** no WhatsApp  
+✅ **Identificar as palavras mais frequentes** nas mensagens  
+✅ **Ver a distribuição de mensagens por categoria**  
+✅ **Obter sugestões para aumentar o engajamento**  
+
+Use os **filtros na barra lateral** para personalizar sua análise!  
+""")
+
 
 # 📌 TOP 10 Pessoas Mais Ativas
 st.header("🏆 TOP 10 Pessoas Mais Ativas")
