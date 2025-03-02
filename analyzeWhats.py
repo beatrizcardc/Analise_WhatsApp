@@ -60,37 +60,54 @@ df_filtrado = df[
 
 # 📌 Exibir Mensagens Filtradas
 st.header("📅 Mensagens Filtradas")
-st.dataframe(df_filtrado[["Data", "Hora", "Remetente", "Mensagem", "Categoria"]])
+if not df_filtrado.empty:
+    st.dataframe(df_filtrado[["Data", "Hora", "Remetente", "Mensagem", "Categoria"]])
+else:
+    st.warning("⚠ Nenhuma mensagem encontrada para o período e categoria selecionados.")
 
 # 📌 TOP 10 Pessoas Mais Ativas
 st.header("🏆 TOP 10 Pessoas Mais Ativas")
-top_usuarios = df_filtrado["Remetente"].value_counts().head(10)
-st.table(top_usuarios)
+if not df_filtrado.empty:
+    top_usuarios = df_filtrado["Remetente"].value_counts().head(10)
+    st.table(top_usuarios)
+else:
+    st.warning("⚠ Nenhum dado para exibir no ranking de usuários mais ativos.")
 
 # 📌 Dias da Semana Mais Ativos
 st.header("📅 Dias da Semana Mais Ativos")
-df_filtrado["Dia da Semana"] = pd.to_datetime(df_filtrado["Data"]).dt.day_name()
-dias_ativos = df_filtrado["Dia da Semana"].value_counts()
-st.bar_chart(dias_ativos)
+if not df_filtrado.empty:
+    df_filtrado["Dia da Semana"] = pd.to_datetime(df_filtrado["Data"]).dt.day_name()
+    dias_ativos = df_filtrado["Dia da Semana"].value_counts()
+    st.bar_chart(dias_ativos)
+else:
+    st.warning("⚠ Nenhum dado disponível para exibir os dias mais ativos.")
 
 # 📌 Palavras Mais Frequentes
-todas_palavras = " ".join(df_filtrado["Mensagem"]).lower().split()
-palavras_filtradas = [word for word in todas_palavras if word not in stop_words and len(word) > 3]
-palavras_comuns = Counter(palavras_filtradas).most_common(10)
-
-# 📌 Exibir palavras mais frequentes
 st.header("🔠 Palavras Mais Frequentes")
-st.table(pd.DataFrame(palavras_comuns, columns=["Palavra", "Frequência"]))
+if not df_filtrado.empty:
+    mensagens_texto = df_filtrado["Mensagem"].dropna().astype(str)  # Removendo NaN
+    todas_palavras = " ".join(mensagens_texto).lower().split()
+    palavras_filtradas = [word for word in todas_palavras if word not in stop_words and len(word) > 3]
+    palavras_comuns = Counter(palavras_filtradas).most_common(10)
+    
+    if palavras_comuns:
+        st.table(pd.DataFrame(palavras_comuns, columns=["Palavra", "Frequência"]))
+    else:
+        st.warning("⚠ Não há palavras suficientes para análise.")
+else:
+    st.warning("⚠ Nenhuma mensagem disponível para análise de palavras.")
 
 # 📌 Distribuição das Categorias
 st.header("📊 Distribuição das Categorias")
-categorias_count = df_filtrado["Categoria"].value_counts()
+if not df_filtrado.empty:
+    categorias_count = df_filtrado["Categoria"].value_counts()
 
-# Criar gráfico
-fig, ax = plt.subplots()
-categorias_count.plot(kind="bar", ax=ax, color="skyblue")
-plt.xticks(rotation=45)
-st.pyplot(fig)
+    fig, ax = plt.subplots()
+    categorias_count.plot(kind="bar", ax=ax, color="skyblue")
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
+else:
+    st.warning("⚠ Nenhuma categoria encontrada no período selecionado.")
 
 # 📌 Seleção das 2 Categorias Mais Importantes
 st.sidebar.header("🌟 Engajamento")
@@ -113,5 +130,6 @@ st.write(f"💡 **Dicas para aumentar {categoria2}:** {dicas[categoria2]}")
 # 📌 Rodapé
 st.markdown("---")
 st.markdown("📌 **Projeto desenvolvido por Beatriz Cardoso Cunha com Scrum para análise de grupos do WhatsApp.**")
+
 
 
