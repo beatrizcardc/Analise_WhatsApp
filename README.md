@@ -4,7 +4,9 @@ Projeto para análise das interações no WhatsApp
 
 ![Python](https://img.shields.io/badge/Python-3.9-blue?style=for-the-badge&logo=python)  
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.10.0-red?style=for-the-badge&logo=streamlit)  
-![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow?style=for-the-badge)  
+![Status](https://img.shields.io/badge/Status-Concluído-brightgreen?style=for-the-badge)  
+
+
 
 ## 📌 Sobre o Projeto  
 O **AnalyzeWhats** é um **aplicativo de análise de mensagens do WhatsApp** desenvolvido com **Python e Streamlit**, que permite **visualizar estatísticas, engajamento e padrões de comportamento** em grupos do WhatsApp.  
