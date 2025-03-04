@@ -158,9 +158,8 @@ if not df_filtrado.empty:
     # Exibir gráfico corrigido
     st.bar_chart(dias_ativos)
     
-    else:
-        st.warning("⚠ Nenhum dado disponível para exibir os dias mais ativos.")
-
+else:
+    st.warning("⚠ Nenhum dado disponível para exibir os dias mais ativos.")
 
 
     # 📌 Palavras Mais Frequentes
