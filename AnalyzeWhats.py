@@ -112,14 +112,6 @@ if st.session_state["uploaded_file"] is None:
     st.warning("⚠ Nenhum arquivo carregado. Faça o upload de um arquivo .txt para começar a análise.")
     st.stop()  # 🔹 Para a execução do código até que o usuário envie um arquivo
 
-# 📌 Criar botão para resetar e limpar o upload
-if "uploaded_file" not in st.session_state:
-    st.session_state["uploaded_file"] = None
-
-if st.button("🔄 Limpar e carregar novo arquivo"):
-    st.session_state["uploaded_file"] = None
-    st.experimental_rerun()
-
     # 📌 Exibir DataFrame processado
     st.write("✅ **Arquivo processado com sucesso!** Visualizando os primeiros registros:")
     st.dataframe(df.head())
