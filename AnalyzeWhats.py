@@ -41,6 +41,25 @@ def check_password():
 if not check_password():
     st.stop()
 
+# 📌 Criar botão para resetar e limpar o upload
+if "uploaded_file" not in st.session_state:
+    st.session_state["uploaded_file"] = None
+
+if st.button("🔄 Limpar e carregar novo arquivo"):
+    st.session_state["uploaded_file"] = None
+    st.experimental_rerun()
+
+# 📌 Upload do arquivo pelo usuário
+uploaded_file = st.file_uploader("📂 Faça o upload do arquivo .txt exportado do WhatsApp", type=["txt"])
+
+if uploaded_file is not None:
+    st.session_state["uploaded_file"] = uploaded_file  # Salvar no session_state
+
+# 📌 Verificar se o arquivo foi carregado antes de processar
+if st.session_state["uploaded_file"] is None:
+    st.warning("⚠ Nenhum arquivo carregado. Faça o upload de um arquivo .txt para começar a análise.")
+    st.stop()  # 🔹 Para a execução do código até que o usuário envie um arquivo
+
 
 # 📌 Função para processar o arquivo do WhatsApp
 def processar_arquivo(file):
