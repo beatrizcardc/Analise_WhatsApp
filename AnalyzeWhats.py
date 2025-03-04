@@ -169,6 +169,16 @@ if uploaded_file is not None:
     else:
         st.warning("⚠ Nenhuma categoria encontrada no período selecionado.")
 
+    # 📌 Conselhos para Melhorar o Engajamento
+    st.header("📢 Dicas para Melhorar o Engajamento")
+    dicas = {
+        "Boas-vindas e Entradas no Grupo": "Envie mensagens personalizadas de boas-vindas e incentive apresentações.",
+        "Compartilhamento de Conteúdo e Links": "Poste conteúdos relevantes e incentive o compartilhamento de materiais informativos.",
+        "Discussões Técnicas e Consultas": "Proponha perguntas instigantes e crie enquetes para gerar mais interação.",
+        "Convites e Organização de Eventos": "Divulgue eventos com antecedência e envie lembretes frequentes.",
+        "Mensagens de Apoio, Felicitações e Informais": "Celebre conquistas do grupo e crie um ambiente acolhedor.",
+    }
+
 # 📌 Rodapé
 st.markdown("---")
 st.markdown("📌 **Projeto desenvolvido por Beatriz Cardoso Cunha com Scrum para análise de grupos do WhatsApp.**")
