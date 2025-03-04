@@ -142,9 +142,14 @@ if uploaded_file is not None:
     if not df_filtrado.empty:
         df_filtrado["Dia da Semana"] = df_filtrado["Data"].dt.day_name()
         dias_ativos = df_filtrado["Dia da Semana"].value_counts()
+    
+        # 🔹 Ordena do maior para o menor
+        dias_ativos = dias_ativos.sort_values(ascending=False)
+    
         st.bar_chart(dias_ativos)
     else:
         st.warning("⚠ Nenhum dado disponível para exibir os dias mais ativos.")
+
 
     # 📌 Palavras Mais Frequentes
     st.header("🔠 Palavras Mais Frequentes")
