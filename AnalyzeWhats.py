@@ -154,7 +154,7 @@ if uploaded_file is not None:
         dias_ativos = dias_ativos.reindex(ordem_dias).dropna()  # Reindexando e removendo dias sem mensagens
     
         # 🔹 Ordenar os dias pela quantidade de mensagens (maior para menor)
-        dias_ativos = dias_ativos.sort_values(ascending=False)
+       # dias_ativos = dias_ativos.sort_values(ascending=False)
     
         # Exibir gráfico corrigido
         st.bar_chart(dias_ativos)
