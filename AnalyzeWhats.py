@@ -160,21 +160,20 @@ else:
     st.warning("⚠ Nenhum dado disponível para exibir os dias mais ativos.")
 
 
-
-    # 📌 Palavras Mais Frequentes
-    st.header("🔠 Palavras Mais Frequentes")
-    if not df_filtrado.empty:
-        mensagens_texto = df_filtrado["Mensagem"].dropna().astype(str)
-        todas_palavras = " ".join(mensagens_texto).lower().split()
-        palavras_filtradas = [word for word in todas_palavras if word not in stop_words and len(word) > 3]
-        palavras_comuns = Counter(palavras_filtradas).most_common(10)
+# 📌 Palavras Mais Frequentes
+st.header("🔠 Palavras Mais Frequentes")
+if not df_filtrado.empty:
+    mensagens_texto = df_filtrado["Mensagem"].dropna().astype(str)
+    todas_palavras = " ".join(mensagens_texto).lower().split()
+    palavras_filtradas = [word for word in todas_palavras if word not in stop_words and len(word) > 3]
+    palavras_comuns = Counter(palavras_filtradas).most_common(10)
         
-        if palavras_comuns:
-            st.table(pd.DataFrame(palavras_comuns, columns=["Palavra", "Frequência"]))
-        else:
-            st.warning("⚠ Não há palavras suficientes para análise.")
+    if palavras_comuns:
+        st.table(pd.DataFrame(palavras_comuns, columns=["Palavra", "Frequência"]))
     else:
-        st.warning("⚠ Nenhuma mensagem disponível para análise de palavras.")
+        st.warning("⚠ Não há palavras suficientes para análise.")
+else:
+    st.warning("⚠ Nenhuma mensagem disponível para análise de palavras.")
 
    # 📌 Distribuição das Categorias
 st.header("📊 Distribuição das Categorias")
