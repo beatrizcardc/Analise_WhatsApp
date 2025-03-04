@@ -1,4 +1,4 @@
-import streamlit as st
+Curimport streamlit as st
 import pandas as pd
 import re
 import matplotlib.pyplot as plt
@@ -84,7 +84,7 @@ st.title("📊 AnalyzeWhats - Análise de Mensagens do WhatsApp")
 
 st.markdown("""
 ### 📌 Sobre o AnalyzeWhats
-O **AnalyzeWhats** é um aplicativo desenvolvido para **analisar interações em grupos do WhatsApp**.  
+O **AnalyzeWhats** é um aplicativo desenvolvido para analisar interações em grupos de Cursos do WhatsApp.  
 Com ele, você pode visualizar estatísticas sobre participação dos usuários, tipos de mensagens mais frequentes e gerar **insights** para engajar mais seu grupo.
 
 ### 🔎 O que você pode fazer aqui?
@@ -187,9 +187,9 @@ if uploaded_file is not None:
         st.warning("⚠ Nenhuma categoria encontrada no período selecionado.")
 
 # 📌 Seleção das 2 Categorias Mais Importantes
-st.sidebar.header("🌟 Engajamento")
-categoria1 = st.sidebar.selectbox("Escolha a 1ª Categoria Mais Importante", df["Categoria"].unique())
-categoria2 = st.sidebar.selectbox("Escolha a 2ª Categoria Mais Importante", df["Categoria"].unique())
+st.sidebar.header("🌟 Engajamento - Selecione 2 categorias principais para obter dicas de engajamento")
+categoria1 = st.sidebar.selectbox("Escolha a 1ª Categoria", df["Categoria"].unique())
+categoria2 = st.sidebar.selectbox("Escolha a 2ª Categoria", df["Categoria"].unique())
 
 # 📌 Conselhos para Melhorar o Engajamento
 st.header("📢 Dicas para Melhorar o Engajamento")
