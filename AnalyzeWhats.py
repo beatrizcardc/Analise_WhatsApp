@@ -79,7 +79,24 @@ def processar_arquivo(file):
     return df, csv_buffer.getvalue()
 
 # 📌 Interface do Streamlit
+# 📌 Nome e Introdução do Aplicativo
 st.title("📊 AnalyzeWhats - Análise de Mensagens do WhatsApp")
+
+st.markdown("""
+### 📌 Sobre o AnalyzeWhats
+O **AnalyzeWhats** é um aplicativo desenvolvido para **analisar interações em grupos do WhatsApp**.  
+Com ele, você pode visualizar estatísticas sobre participação dos usuários, tipos de mensagens mais frequentes e gerar **insights** para engajar mais seu grupo.
+
+### 🔎 O que você pode fazer aqui?
+✅ **Filtrar mensagens** por período e categorias específicas  
+✅ **Descobrir quem são os usuários mais ativos** no grupo  
+✅ **Analisar os dias mais movimentados** no WhatsApp  
+✅ **Identificar as palavras mais frequentes** nas mensagens  
+✅ **Ver a distribuição de mensagens por categoria**  
+✅ **Obter sugestões para aumentar o engajamento**  
+
+Use os **filtros na barra lateral** para personalizar sua análise!  
+""")
 
 # 📌 Upload do arquivo pelo usuário
 uploaded_file = st.file_uploader("📂 Faça o upload do arquivo .txt exportado do WhatsApp", type=["txt"])
