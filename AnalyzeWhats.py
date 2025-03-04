@@ -47,7 +47,7 @@ if "uploaded_file" not in st.session_state:
 
 if st.button("🔄 Limpar e carregar novo arquivo"):
     st.session_state["uploaded_file"] = None
-    st.experimental_rerun()
+    st.rerun()
 
 # 📌 Upload do arquivo pelo usuário
 uploaded_file = st.file_uploader("📂 Faça o upload do arquivo .txt exportado do WhatsApp", type=["txt"])
