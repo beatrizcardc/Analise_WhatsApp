@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from collections import Counter
 import nltk
 from nltk.corpus import stopwords
+from nltk.util import ngrams
 import io
 
 
@@ -39,6 +40,14 @@ def check_password():
 # Verifica login antes de carregar o app
 if not check_password():
     st.stop()
+
+# 📌 Criar botão para resetar e limpar o upload
+if "uploaded_file" not in st.session_state:
+    st.session_state["uploaded_file"] = None
+
+if st.button("🔄 Limpar e carregar novo arquivo"):
+    st.session_state["uploaded_file"] = None
+    st.experimental_rerun()
 
 # 📌 Função para processar o arquivo do WhatsApp
 def processar_arquivo(file):
@@ -160,22 +169,36 @@ else:
     st.warning("⚠ Nenhum dado disponível para exibir os dias mais ativos.")
 
 
-# 📌 Palavras Mais Frequentes
-st.header("🔠 Palavras Mais Frequentes")
+# 📌 Palavras e Frases Mais Frequentes
+st.header("🔠 Frases Mais Frequentes")
+
 if not df_filtrado.empty:
     mensagens_texto = df_filtrado["Mensagem"].dropna().astype(str)
-    todas_palavras = " ".join(mensagens_texto).lower().split()
-    palavras_filtradas = [word for word in todas_palavras if word not in stop_words and len(word) > 3]
-    palavras_comuns = Counter(palavras_filtradas).most_common(10)
-        
-    if palavras_comuns:
-        st.table(pd.DataFrame(palavras_comuns, columns=["Palavra", "Frequência"]))
-    else:
-        st.warning("⚠ Não há palavras suficientes para análise.")
-else:
-    st.warning("⚠ Nenhuma mensagem disponível para análise de palavras.")
 
-   # 📌 Distribuição das Categorias
+    # 🔹 Tokenizar as mensagens em palavras
+    todas_palavras = " ".join(mensagens_texto).lower().split()
+
+    # 🔹 Remover stopwords e palavras pequenas
+    palavras_filtradas = [word for word in todas_palavras if word not in stop_words and len(word) > 3]
+
+    # 🔹 Criar n-gramas (trigramas - frases de 3 palavras)
+    trigrams = list(ngrams(palavras_filtradas, 3))  # Gera frases com 3 palavras
+
+    # 🔹 Contar as frases mais frequentes
+    frases_comuns = Counter(trigrams).most_common(10)
+
+    # 🔹 Formatando as frases para exibição
+    frases_formatadas = [(" ".join(frase), contagem) for frase, contagem in frases_comuns]
+
+    if frases_formatadas:
+        st.table(pd.DataFrame(frases_formatadas, columns=["Frase", "Frequência"]))
+    else:
+        st.warning("⚠ Não há frases suficientes para análise.")
+else:
+    st.warning("⚠ Nenhuma mensagem disponível para análise de frases.")
+    
+
+# 📌 Distribuição das Categorias
 st.header("📊 Distribuição das Categorias")
 if not df_filtrado.empty:
     categorias_count = df_filtrado["Categoria"].value_counts()
