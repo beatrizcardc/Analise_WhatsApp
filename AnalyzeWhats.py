@@ -139,25 +139,24 @@ if uploaded_file is not None:
         st.warning("⚠ Nenhum dado para exibir no ranking de usuários mais ativos.")
 
 
-
-    # 📌 Dias da Semana Mais Ativos
-    st.header("📅 Dias da Semana Mais Ativos")
+# 📌 Dias da Semana Mais Ativos
+st.header("📅 Dias da Semana Mais Ativos")
     
-    if not df_filtrado.empty:
-        df_filtrado["Dia da Semana"] = pd.to_datetime(df_filtrado["Data"]).dt.day_name()
+if not df_filtrado.empty:
+    df_filtrado["Dia da Semana"] = pd.to_datetime(df_filtrado["Data"]).dt.day_name()
     
-        # Contagem de mensagens por dia
-        dias_ativos = df_filtrado["Dia da Semana"].value_counts()
+    # Contagem de mensagens por dia
+    dias_ativos = df_filtrado["Dia da Semana"].value_counts()
     
-        # 🔹 Garantir a ordenação correta dos dias da semana
-        ordem_dias = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-        dias_ativos = dias_ativos.reindex(ordem_dias).dropna()  # Reindexando e removendo dias sem mensagens
+     # 🔹 Garantir a ordenação correta dos dias da semana
+    ordem_dias = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+     dias_ativos = dias_ativos.reindex(ordem_dias).dropna()  # Reindexando e removendo dias sem mensagens
     
-        # 🔹 Ordenar os dias pela quantidade de mensagens (maior para menor)
-       # dias_ativos = dias_ativos.sort_values(ascending=False)
+    # 🔹 Ordenar os dias pela quantidade de mensagens (maior para menor)
+    dias_ativos = dias_ativos.sort_values(ascending=False)
     
-        # Exibir gráfico corrigido
-        st.bar_chart(dias_ativos)
+    # Exibir gráfico corrigido
+    st.bar_chart(dias_ativos)
     
     else:
         st.warning("⚠ Nenhum dado disponível para exibir os dias mais ativos.")
