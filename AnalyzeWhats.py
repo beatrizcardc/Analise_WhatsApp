@@ -150,7 +150,7 @@ if not df_filtrado.empty:
     
      # 🔹 Garantir a ordenação correta dos dias da semana
     ordem_dias = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-     dias_ativos = dias_ativos.reindex(ordem_dias).dropna()  # Reindexando e removendo dias sem mensagens
+    dias_ativos = dias_ativos.reindex(ordem_dias).dropna()  # Reindexando e removendo dias sem mensagens
     
     # 🔹 Ordenar os dias pela quantidade de mensagens (maior para menor)
     dias_ativos = dias_ativos.sort_values(ascending=False)
