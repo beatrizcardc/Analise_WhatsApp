@@ -120,30 +120,30 @@ Com ele, você pode visualizar estatísticas sobre participação dos usuários,
 Use os **filtros na barra lateral** para personalizar sua análise!  
 """)
 
-    # 📌 Exibir DataFrame processado
-    st.write("✅ **Arquivo processado com sucesso!** Visualizando os primeiros registros:")
-    st.dataframe(df.head())
+# 📌 Exibir DataFrame processado
+st.write("✅ **Arquivo processado com sucesso!** Visualizando os primeiros registros:")
+st.dataframe(df.head())
 
-    # 📌 Opção para baixar o arquivo processado
-    st.download_button(
-        label="📥 Baixar arquivo CSV processado",
-        data=csv_data,
-        file_name="whatsapp_processado.csv",
-        mime="text/csv",
-    )
+# 📌 Opção para baixar o arquivo processado
+st.download_button(
+    label="📥 Baixar arquivo CSV processado",
+    data=csv_data,
+    file_name="whatsapp_processado.csv",
+    mime="text/csv",
+)
 
-    # 📌 Sidebar: Filtros
-    st.sidebar.header("🔎 Filtros")
-    data_inicio = st.sidebar.date_input("Data Inicial", df["Data"].min())
-    data_fim = st.sidebar.date_input("Data Final", df["Data"].max())
-    categoria_selecionada = st.sidebar.multiselect("Selecione a(s) Categoria(s)", df["Categoria"].unique(), default=df["Categoria"].unique())
+# 📌 Sidebar: Filtros
+st.sidebar.header("🔎 Filtros")
+data_inicio = st.sidebar.date_input("Data Inicial", df["Data"].min())
+data_fim = st.sidebar.date_input("Data Final", df["Data"].max())
+categoria_selecionada = st.sidebar.multiselect("Selecione a(s) Categoria(s)", df["Categoria"].unique(), default=df["Categoria"].unique())
 
-    # 📌 Aplicar filtros
-    df_filtrado = df[
-        (df["Data"] >= pd.to_datetime(data_inicio)) & 
-        (df["Data"] <= pd.to_datetime(data_fim)) & 
-        (df["Categoria"].isin(categoria_selecionada))
-    ]
+# 📌 Aplicar filtros
+df_filtrado = df[
+    (df["Data"] >= pd.to_datetime(data_inicio)) & 
+    (df["Data"] <= pd.to_datetime(data_fim)) & 
+    (df["Categoria"].isin(categoria_selecionada))
+]
 
 # 📌 Análise de participação
 st.header("🏆 TOP 10 Pessoas Mais Ativas")
