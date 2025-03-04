@@ -138,27 +138,27 @@ if uploaded_file is not None:
     else:
         st.warning("⚠ Nenhum dado para exibir no ranking de usuários mais ativos.")
 
-
 # 📌 Dias da Semana Mais Ativos
 st.header("📅 Dias da Semana Mais Ativos")
 
 if not df_filtrado.empty:
     df_filtrado["Dia da Semana"] = pd.to_datetime(df_filtrado["Data"]).dt.day_name()
 
-    # 🔹 Definir a ordem correta dos dias da semana
+    # 🔹 Definir a ordem correta dos dias da semana (Segunda → Domingo)
     ordem_dias = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
-    # 🔹 Criar um tipo categórico com a ordem correta
+    # 🔹 Criar um tipo categórico para garantir a ordenação
     df_filtrado["Dia da Semana"] = pd.Categorical(df_filtrado["Dia da Semana"], categories=ordem_dias, ordered=True)
 
-    # 🔹 Contar as mensagens e reordenar corretamente
-    dias_ativos = df_filtrado["Dia da Semana"].value_counts().reindex(ordem_dias, fill_value=0)
+    # 🔹 Contar mensagens e ordenar corretamente
+    dias_ativos = df_filtrado["Dia da Semana"].value_counts().sort_index()
 
-    # 📊 Exibir o gráfico com os dias organizados
+    # 📊 Exibir gráfico com os dias organizados na ordem correta
     st.bar_chart(dias_ativos)
 
 else:
     st.warning("⚠ Nenhum dado disponível para exibir os dias mais ativos.")
+
 
 
     # 📌 Palavras Mais Frequentes
