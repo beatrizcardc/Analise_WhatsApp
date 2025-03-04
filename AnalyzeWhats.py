@@ -80,7 +80,7 @@ if st.session_state["uploaded_file"] is None:
     st.warning("⚠ Nenhum arquivo carregado. Faça o upload de um arquivo .txt para começar a análise.")
     st.stop()
 
-# 📌 Função para processar o arquivo do WhatsApp
+# 📌 Processar o arquivo carregado
 def processar_arquivo(file):
     """Processa o arquivo de conversa exportado do WhatsApp."""
     lines = file.getvalue().decode("utf-8").split("\n")
@@ -99,27 +99,39 @@ def processar_arquivo(file):
 
     return df
 
-# 📌 Processar o arquivo carregado
 df = processar_arquivo(st.session_state["uploaded_file"])
+
+# 📌 Sidebar: Filtros
+st.sidebar.header("🔎 Filtros")
+data_inicio = st.sidebar.date_input("Data Inicial", df["Data"].min())
+data_fim = st.sidebar.date_input("Data Final", df["Data"].max())
+categoria_selecionada = st.sidebar.multiselect("Selecione a(s) Categoria(s)", df["Categoria"].unique(), default=df["Categoria"].unique())
+
+# 📌 Aplicar filtros
+df_filtrado = df[
+    (df["Data"] >= pd.to_datetime(data_inicio)) & 
+    (df["Data"] <= pd.to_datetime(data_fim)) & 
+    (df["Categoria"].isin(categoria_selecionada))
+]
 
 # 📌 Exibir DataFrame processado
 st.write("✅ **Arquivo processado com sucesso!** Visualizando os primeiros registros:")
-st.dataframe(df.head())
+st.dataframe(df_filtrado.head())
 
 # 📌 Dias da Semana Mais Ativos
 st.header("📅 Dias da Semana Mais Ativos")
 
-if not df.empty:
-    df["Dia da Semana"] = pd.to_datetime(df["Data"]).dt.day_name()
+if not df_filtrado.empty:
+    df_filtrado["Dia da Semana"] = pd.to_datetime(df_filtrado["Data"]).dt.day_name()
 
     # 🔹 Definir a ordem correta dos dias da semana (Segunda → Domingo)
     ordem_dias = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
     # 🔹 Criar um tipo categórico para garantir a ordenação
-    df["Dia da Semana"] = pd.Categorical(df["Dia da Semana"], categories=ordem_dias, ordered=True)
+    df_filtrado["Dia da Semana"] = pd.Categorical(df_filtrado["Dia da Semana"], categories=ordem_dias, ordered=True)
 
     # 🔹 Contar mensagens e ordenar corretamente
-    dias_ativos = df["Dia da Semana"].value_counts().sort_index()
+    dias_ativos = df_filtrado["Dia da Semana"].value_counts().sort_index()
 
     # 📊 Exibir gráfico com os dias organizados na ordem correta
     st.bar_chart(dias_ativos)
@@ -127,34 +139,26 @@ if not df.empty:
 else:
     st.warning("⚠ Nenhum dado disponível para exibir os dias mais ativos.")
 
-# 📌 Frases Mais Frequentes
-st.header("🔠 Frases Mais Frequentes")
+# 📌 Engajamento
+st.sidebar.header("🌟 Engajamento - Selecione 2 categorias principais para obter dicas de engajamento")
+categoria1 = st.sidebar.selectbox("Escolha a 1ª Categoria", df["Categoria"].unique())
+categoria2 = st.sidebar.selectbox("Escolha a 2ª Categoria", df["Categoria"].unique())
 
-if not df.empty:
-    mensagens_texto = df["Mensagem"].dropna().astype(str)
+# 📌 Conselhos para Melhorar o Engajamento
+st.header("📢 Dicas para Melhorar o Engajamento")
+dicas = {
+    "Boas-vindas e Entradas no Grupo": "Envie mensagens personalizadas de boas-vindas e incentive apresentações.",
+    "Compartilhamento de Conteúdo e Links": "Poste conteúdos relevantes e incentive o compartilhamento de materiais informativos.",
+    "Discussões Técnicas e Consultas": "Proponha perguntas instigantes e crie enquetes para gerar mais interação.",
+    "Convites e Organização de Eventos": "Divulgue eventos com antecedência e envie lembretes frequentes.",
+    "Mensagens de Apoio e Felicitações": "Celebre conquistas do grupo e crie um ambiente acolhedor.",
+    "Outro": "Incentive discussões diversas e mantenha um ambiente colaborativo."
+}
 
-    # 🔹 Tokenizar as mensagens em palavras
-    todas_palavras = " ".join(mensagens_texto).lower().split()
-
-    # 🔹 Remover stopwords e palavras pequenas
-    palavras_filtradas = [word for word in todas_palavras if word not in stop_words and len(word) > 3]
-
-    # 🔹 Criar n-gramas (trigramas - frases de 4 palavras)
-    trigrams = list(ngrams(palavras_filtradas, 4))  # Gera frases com 3 palavras
-
-    # 🔹 Contar as frases mais frequentes
-    frases_comuns = Counter(trigrams).most_common(10)
-
-    # 🔹 Formatando as frases para exibição
-    frases_formatadas = [(" ".join(frase), contagem) for frase, contagem in frases_comuns]
-
-    if frases_formatadas:
-        st.table(pd.DataFrame(frases_formatadas, columns=["Frase", "Frequência"]))
-    else:
-        st.warning("⚠ Não há frases suficientes para análise.")
-else:
-    st.warning("⚠ Nenhuma mensagem disponível para análise de frases.")
+st.write(f"💡 **Dicas para aumentar {categoria1}:** {dicas.get(categoria1, 'Nenhuma dica disponível.')}")
+st.write(f"💡 **Dicas para aumentar {categoria2}:** {dicas.get(categoria2, 'Nenhuma dica disponível.')}")
 
 # 📌 Rodapé
 st.markdown("---")
 st.markdown("📌 **Projeto desenvolvido por Beatriz Cardoso Cunha com Scrum para análise de grupos do WhatsApp.**")
+
