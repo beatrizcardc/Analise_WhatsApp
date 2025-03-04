@@ -119,6 +119,18 @@ Com ele, você pode visualizar estatísticas sobre participação dos usuários,
 
 Use os **filtros na barra lateral** para personalizar sua análise!  
 """)
+# 📌 Verificar se o arquivo foi carregado antes de processar
+if uploaded_file is None:
+    st.warning("⚠ Nenhum arquivo carregado. Faça o upload de um arquivo .txt para começar a análise.")
+    st.stop()  # 🔹 Para a execução do código até que o usuário envie um arquivo
+
+# 📌 Processar o arquivo
+df, csv_data = processar_arquivo(uploaded_file)
+
+# 📌 Exibir DataFrame processado
+st.write("✅ **Arquivo processado com sucesso!** Visualizando os primeiros registros:")
+st.dataframe(df.head())
+
 
 # 📌 Exibir DataFrame processado
 st.write("✅ **Arquivo processado com sucesso!** Visualizando os primeiros registros:")
