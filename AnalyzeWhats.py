@@ -173,7 +173,7 @@ if uploaded_file is not None:
 st.sidebar.header("🌟 Engajamento")
 categoria1 = st.sidebar.selectbox("Escolha a 1ª Categoria Mais Importante", df["Categoria"].unique())
 categoria2 = st.sidebar.selectbox("Escolha a 2ª Categoria Mais Importante", df["Categoria"].unique())
-        
+
 # 📌 Conselhos para Melhorar o Engajamento
 st.header("📢 Dicas para Melhorar o Engajamento")
 dicas = {
@@ -182,10 +182,19 @@ dicas = {
     "Discussões Técnicas e Consultas": "Proponha perguntas instigantes e crie enquetes para gerar mais interação.",
     "Convites e Organização de Eventos": "Divulgue eventos com antecedência e envie lembretes frequentes.",
     "Mensagens de Apoio, Felicitações e Informais": "Celebre conquistas do grupo e crie um ambiente acolhedor.",
+    "Outro": "Incentive discussões diversas e mantenha um ambiente colaborativo."
 }
-        
-st.write(f"💡 **Dicas para aumentar {categoria1}:** {dicas[categoria1]}")
-st.write(f"💡 **Dicas para aumentar {categoria2}:** {dicas[categoria2]}")
+
+if categoria1 in dicas:
+    st.write(f"💡 **Dicas para aumentar {categoria1}:** {dicas[categoria1]}")
+else:
+    st.write(f"⚠ **Nenhuma dica disponível para {categoria1}.**")
+
+if categoria2 in dicas:
+    st.write(f"💡 **Dicas para aumentar {categoria2}:** {dicas[categoria2]}")
+else:
+    st.write(f"⚠ **Nenhuma dica disponível para {categoria2}.**")
+
 
 # 📌 Rodapé
 st.markdown("---")
