@@ -169,23 +169,23 @@ if uploaded_file is not None:
     else:
         st.warning("⚠ Nenhuma categoria encontrada no período selecionado.")
 
-            # 📌 Seleção das 2 Categorias Mais Importantes
-        st.sidebar.header("🌟 Engajamento")
-        categoria1 = st.sidebar.selectbox("Escolha a 1ª Categoria Mais Importante", df["Categoria"].unique())
-        categoria2 = st.sidebar.selectbox("Escolha a 2ª Categoria Mais Importante", df["Categoria"].unique())
+# 📌 Seleção das 2 Categorias Mais Importantes
+st.sidebar.header("🌟 Engajamento")
+categoria1 = st.sidebar.selectbox("Escolha a 1ª Categoria Mais Importante", df["Categoria"].unique())
+categoria2 = st.sidebar.selectbox("Escolha a 2ª Categoria Mais Importante", df["Categoria"].unique())
         
-        # 📌 Conselhos para Melhorar o Engajamento
-        st.header("📢 Dicas para Melhorar o Engajamento")
-        dicas = {
-            "Boas-vindas e Entradas no Grupo": "Envie mensagens personalizadas de boas-vindas e incentive apresentações.",
-            "Compartilhamento de Conteúdo e Links": "Poste conteúdos relevantes e incentive o compartilhamento de materiais informativos.",
-            "Discussões Técnicas e Consultas": "Proponha perguntas instigantes e crie enquetes para gerar mais interação.",
-            "Convites e Organização de Eventos": "Divulgue eventos com antecedência e envie lembretes frequentes.",
-            "Mensagens de Apoio, Felicitações e Informais": "Celebre conquistas do grupo e crie um ambiente acolhedor.",
-        }
+# 📌 Conselhos para Melhorar o Engajamento
+st.header("📢 Dicas para Melhorar o Engajamento")
+dicas = {
+    "Boas-vindas e Entradas no Grupo": "Envie mensagens personalizadas de boas-vindas e incentive apresentações.",
+    "Compartilhamento de Conteúdo e Links": "Poste conteúdos relevantes e incentive o compartilhamento de materiais informativos.",
+    "Discussões Técnicas e Consultas": "Proponha perguntas instigantes e crie enquetes para gerar mais interação.",
+    "Convites e Organização de Eventos": "Divulgue eventos com antecedência e envie lembretes frequentes.",
+    "Mensagens de Apoio, Felicitações e Informais": "Celebre conquistas do grupo e crie um ambiente acolhedor.",
+}
         
-        st.write(f"💡 **Dicas para aumentar {categoria1}:** {dicas[categoria1]}")
-        st.write(f"💡 **Dicas para aumentar {categoria2}:** {dicas[categoria2]}")
+st.write(f"💡 **Dicas para aumentar {categoria1}:** {dicas[categoria1]}")
+st.write(f"💡 **Dicas para aumentar {categoria2}:** {dicas[categoria2]}")
 
 # 📌 Rodapé
 st.markdown("---")
