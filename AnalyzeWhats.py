@@ -177,21 +177,23 @@ else:
 
 # 📌 Distribuição das Categorias
 st.header("📊 Distribuição das Categorias")
-
 if not df_filtrado.empty:
     categorias_count = df_filtrado["Categoria"].value_counts()
 
-    fig, ax = plt.subplots(figsize=(8,6))
-    categorias_count.plot(kind="bar", ax=ax, color="skyblue", edgecolor="black")
+    # Criando cores diferentes para cada categoria
+    cores = plt.cm.Paired(range(len(categorias_count)))
 
-    # Melhorando a formatação do gráfico
-    plt.xticks(rotation=45, ha="right", fontsize=10)
+    fig, ax = plt.subplots(figsize=(8,6))
+    categorias_count.plot(kind="bar", ax=ax, color=cores, edgecolor="black")
+
+    # Melhorando a formatação
+    plt.xticks(rotation=45, ha="right", fontsize=10)  # Rotação do eixo X e fonte menor
     plt.yticks(fontsize=10)
     plt.xlabel("Categoria", fontsize=12)
     plt.ylabel("Quantidade", fontsize=12)
     plt.title("Distribuição de Mensagens por Categoria", fontsize=14)
-
     st.pyplot(fig)
+
 else:
     st.warning("⚠ Nenhuma categoria encontrada no período selecionado.")
 
