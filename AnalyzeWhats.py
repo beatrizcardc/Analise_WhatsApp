@@ -97,6 +97,23 @@ def processar_arquivo(file):
     df = pd.DataFrame(data, columns=["Data", "Hora", "Remetente", "Mensagem"])
     df["Data"] = pd.to_datetime(df["Data"], format="%d/%m/%Y")
 
+    # 📌 Categorizar mensagens
+    def categorizar_mensagem(mensagem):
+        mensagem = mensagem.lower()
+        if any(word in mensagem for word in ["bem-vindo", "boas-vindas", "seja bem", "novo membro"]):
+            return "Boas-vindas e Entradas no Grupo"
+        if re.search(r"https?://\S+|www\.\S+", mensagem):
+            return "Compartilhamento de Conteúdo e Links"
+        if "?" in mensagem or any(word in mensagem for word in ["como", "qual", "quando", "onde", "por que"]):
+            return "Discussões Técnicas e Consultas"
+        if any(word in mensagem for word in ["reunião", "evento", "live", "webinar"]):
+            return "Convites e Organização de Eventos"
+        if any(word in mensagem for word in ["parabéns", "feliz aniversário", "sucesso", "abraços"]):
+            return "Mensagens de Apoio e Felicitações"
+        return "Outro"
+
+    df["Categoria"] = df["Mensagem"].apply(categorizar_mensagem)
+
     return df
 
 df = processar_arquivo(st.session_state["uploaded_file"])
@@ -118,6 +135,25 @@ df_filtrado = df[
 st.write("✅ **Arquivo processado com sucesso!** Visualizando os primeiros registros:")
 st.dataframe(df_filtrado.head())
 
+# 📌 TOP 10 Pessoas Mais Ativas
+st.header("🏆 TOP 10 Pessoas Mais Ativas")
+
+if not df_filtrado.empty:
+    top_usuarios = df_filtrado["Remetente"].value_counts().head(10)
+    st.table(top_usuarios)
+else:
+    st.warning("⚠ Nenhum dado para exibir no ranking de usuários mais ativos.")
+
+# 📌 TOP 10 Pessoas Menos Ativas
+st.header("📉 TOP 10 Pessoas Menos Ativas")
+
+if not df_filtrado.empty:
+    menos_ativos = df_filtrado["Remetente"].value_counts().tail(10)  # Pega os últimos 10 usuários menos ativos
+    st.table(menos_ativos)
+else:
+    st.warning("⚠ Nenhum dado para exibir no ranking de usuários menos ativos.")
+
+
 # 📌 Dias da Semana Mais Ativos
 st.header("📅 Dias da Semana Mais Ativos")
 
@@ -138,6 +174,54 @@ if not df_filtrado.empty:
 
 else:
     st.warning("⚠ Nenhum dado disponível para exibir os dias mais ativos.")
+
+# 📌 Distribuição das Categorias
+st.header("📊 Distribuição das Categorias")
+
+if not df_filtrado.empty:
+    categorias_count = df_filtrado["Categoria"].value_counts()
+
+    fig, ax = plt.subplots(figsize=(8,6))
+    categorias_count.plot(kind="bar", ax=ax, color="skyblue", edgecolor="black")
+
+    # Melhorando a formatação do gráfico
+    plt.xticks(rotation=45, ha="right", fontsize=10)
+    plt.yticks(fontsize=10)
+    plt.xlabel("Categoria", fontsize=12)
+    plt.ylabel("Quantidade", fontsize=12)
+    plt.title("Distribuição de Mensagens por Categoria", fontsize=14)
+
+    st.pyplot(fig)
+else:
+    st.warning("⚠ Nenhuma categoria encontrada no período selecionado.")
+
+# 📌 Frases Mais Frequentes
+st.header("🔠 Frases Mais Frequentes")
+
+if not df_filtrado.empty:
+    mensagens_texto = df_filtrado["Mensagem"].dropna().astype(str)
+
+    # 🔹 Tokenizar as mensagens em palavras
+    todas_palavras = " ".join(mensagens_texto).lower().split()
+
+    # 🔹 Remover stopwords e palavras pequenas
+    palavras_filtradas = [word for word in todas_palavras if word not in stop_words and len(word) > 3]
+
+    # 🔹 Criar n-gramas (trigramas - frases de 3 palavras)
+    trigrams = list(ngrams(palavras_filtradas, 3))  # Gera frases com 3 palavras
+
+    # 🔹 Contar as frases mais frequentes
+    frases_comuns = Counter(trigrams).most_common(10)
+
+    # 🔹 Formatando as frases para exibição
+    frases_formatadas = [(" ".join(frase), contagem) for frase, contagem in frases_comuns]
+
+    if frases_formatadas:
+        st.table(pd.DataFrame(frases_formatadas, columns=["Frase", "Frequência"]))
+    else:
+        st.warning("⚠ Não há frases suficientes para análise.")
+else:
+    st.warning("⚠ Nenhuma mensagem disponível para análise de frases.")
 
 # 📌 Engajamento
 st.sidebar.header("🌟 Engajamento - Selecione 2 categorias principais para obter dicas de engajamento")
